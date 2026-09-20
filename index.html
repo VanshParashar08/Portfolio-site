@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Engineer Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css" />
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-surface: #121212;
+      --primary: #00f0ff;
+      --secondary: #7000ff;
+      --text-main: #f0f0f0;
+      --text-muted: #888888;
+      --grid: rgba(0, 240, 255, 0.05);
+      --font-sans: 'Inter', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      background-image: 
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 40px 40px;
+      overflow-x: hidden;
+    }
+
+    @keyframes fadeUp {
+      0% { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+      100% { transform: translateY(0px); }
+    }
+    @keyframes moveGlow1 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(30px, 40px) scale(1.2); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+    @keyframes moveGlow2 {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(-40px, -30px) scale(1.1); }
+      100% { transform: translate(0, 0) scale(1); }
+    }
+
+    /* Glow effects */
+    .glow {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, var(--secondary) 0%, transparent 60%);
+      opacity: 0.15;
+      filter: blur(80px);
+      z-index: -1;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .glow-1 { top: -150px; left: -100px; background: radial-gradient(circle, rgba(0, 240, 255, 0.4) 0%, transparent 70%); animation: moveGlow1 8s ease-in-out infinite; }
+    .glow-2 { top: 40%; right: -150px; background: radial-gradient(circle, rgba(112, 0, 255, 0.4) 0%, transparent 70%); animation: moveGlow2 10s ease-in-out infinite reverse; }
+
+    /* Layout */
+    .container { width: 100%; max-width: none; padding: 0 4vw; }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 4vw;
+      margin: 0 -4vw;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(5, 5, 5, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.02em;
+    }
+    .logo-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; box-shadow: 0 0 8px var(--primary); animation: pulse 2s infinite; }
+    @keyframes pulse { 0% { opacity: 1; box-shadow: 0 0 12px var(--primary); } 50% { opacity: 0.5; box-shadow: 0 0 4px var(--primary); } 100% { opacity: 1; box-shadow: 0 0 12px var(--primary); } }
+    .nav-links { display: flex; gap: 32px; }
+    .nav-links a { 
+      color: var(--text-muted); 
+      text-decoration: none; 
+      font-size: 0.9rem; 
+      font-family: var(--font-mono); 
+      transition: all 0.3s ease; 
+      position: relative;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px; left: 0;
+      width: 0%; height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--text-main); text-shadow: 0 0 10px rgba(0, 240, 255, 0.4); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* Hero */
+    .hero {
+      padding: 40px 0;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      align-items: center;
+      gap: 60px;
+      min-height: calc(100vh - 80px);
+      position: relative;
+    }
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+    }
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--primary) 0%, #a64aff 50%, var(--primary) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: shine 4s linear infinite;
+    }
+    @keyframes shine { to { background-position: 200% center; } }
+    .hero-content > p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 700px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both;
+    }
+    /* MacBook Mockup */
+    .macbook-mockup {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
+    }
+    .macbook-screen {
+      background: #000;
+      border-radius: 16px 16px 0 0;
+      padding: 12px;
+      border: 2px solid #222;
+      border-bottom: 2px solid #111;
+      position: relative;
+    }
+    .macbook-camera {
+      position: absolute;
+      top: 5px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 4px;
+      background: #333;
+      border-radius: 50%;
+    }
+    .macbook-display {
+      background: linear-gradient(135deg, #0a0a0a 0%, #050505 100%);
+      border-radius: 4px;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background-image: 
+        linear-gradient(var(--grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+    .macbook-base {
+      height: 14px;
+      background: linear-gradient(to bottom, #888, #555);
+      border-radius: 0 0 16px 16px;
+      position: relative;
+      width: 112%;
+      left: -6%;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.8), inset 0 2px 0 rgba(255,255,255,0.2);
+    }
+    .macbook-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70px;
+      height: 5px;
+      background: #444;
+      border-radius: 0 0 5px 5px;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.5);
+    }
+    .macos-window {
+      width: 100%;
+      background: rgba(15, 15, 15, 0.85);
+      border: 1px solid rgba(0, 240, 255, 0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 0 10px rgba(0, 240, 255, 0.05);
+    }
+    .macos-header {
+      background: rgba(25, 25, 25, 0.9);
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      position: relative;
+    }
+    .macos-buttons {
+      display: flex;
+      gap: 6px;
+    }
+    .macos-buttons span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+    .macos-buttons .close { background: #ff5f56; }
+    .macos-buttons .minimize { background: #ffbd2e; }
+    .macos-buttons .maximize { background: #27c93f; }
+    .macos-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+    }
+    .macos-body {
+      padding: 20px;
+    }
+    .macos-body p {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      line-height: 1.7;
+      color: var(--primary);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      z-index: -1;
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+    .btn:hover { 
+      transform: translateY(-2px);
+    }
+    .btn:hover::before { transform: translateX(100%); }
+    .hero-actions { 
+      display: flex; gap: 16px; flex-wrap: wrap; 
+      animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
+    }
+
+
+    /* Sections */
+    section { padding: 80px 0; }
+    .section-title {
+      font-family: var(--font-mono);
+      font-size: 1.1rem;
+      color: var(--primary);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .section-title::after {
+      content: ''; height: 1px; flex-grow: 1; max-width: 300px;
+      background: linear-gradient(90deg, var(--primary), transparent);
+    }
+    .section-heading { font-size: 2.5rem; margin-bottom: 48px; font-weight: 800; letter-spacing: -0.02em; }
+
+    /* Tech Stack */
+    .tech-stack-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 40px 30px;
+      margin-top: 40px;
+    }
+    .tech-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      transition: transform 0.3s;
+    }
+    .tech-item:hover {
+      transform: translateY(-6px);
+    }
+    .tech-item i {
+      font-size: 3.5rem;
+      filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.2));
+    }
+    .tech-item span {
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--text-main);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+
+    /* Projects / Systems */
+    .projects-grid {
+      display: grid;
+      gap: 32px;
+    }
+    #about .projects-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+    #projects .projects-grid {
+      grid-template-columns: 1fr 1fr;
+      align-items: stretch;
+    }
+    .projects-grid .project-card:last-child:nth-child(odd) {
+      grid-column: 1 / -1;
+    }
+    .project-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 32px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .project-card > *:last-child {
+      margin-top: auto !important;
+    }
+    .project-card:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(112, 0, 255, 0.3);
+    }
+    .project-meta {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: var(--secondary);
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+    .project-title { font-size: 1.4rem; font-weight: 700; margin-bottom: 12px; }
+    .project-desc { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+    .project-tags {
+      display: flex;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--primary);
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    .project-tag {
+      background: rgba(0, 240, 255, 0.05);
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+
+    /* Credentials Box */
+    .credentials-box {
+      margin-top: 20px;
+      padding: 12px 16px;
+      background: rgba(10, 10, 10, 0.6);
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    .credentials-box::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--primary);
+      box-shadow: 0 0 8px var(--primary);
+    }
+    .credentials-box:hover {
+      border-color: rgba(0, 240, 255, 0.4);
+      background: rgba(0, 240, 255, 0.05);
+    }
+    .cred-title {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+    }
+    .cred-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+    }
+    .cred-row:last-child {
+      margin-bottom: 0;
+    }
+    .cred-label {
+      color: var(--text-muted);
+    }
+    .cred-value {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 2px 8px;
+      border-radius: 4px;
+      user-select: all; /* Easy copying */
+      cursor: text;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Footer */
+    footer {
+      padding: 40px 0;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .projects-grid { grid-template-columns: 1fr; }
+      .tech-stack-grid { grid-template-columns: repeat(3, 1fr); }
+      .hero { grid-template-columns: 1fr; gap: 40px; }
+    }
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hero-actions { flex-direction: column; }
+      .tech-stack-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
+
+  <div class="container">
+    <nav>
+      <a href="#" class="logo">
+        <div class="logo-dot"></div>
+        Vansh Parashar
+      </a>
+      <div class="nav-links">
+        <a href="#about">01. Background</a>
+        <a href="#skills">02. Tech Stack</a>
+        <a href="#projects">03. Projects</a>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Vansh Parashar.<br><span>System Engineer</span></h1>
+        <p>I am a Computer Science student with a passion for designing and developing scalable, user-centric software solutions, modern full-stack web applications, and secure backend systems.</p>
+        <div class="hero-actions">
+          <a href="#projects" class="btn">View Projects</a>
+          <a href="https://www.linkedin.com/in/vansh-parashar-2ba11027a/" target="_blank" class="btn">LinkedIn Profile</a>
+        </div>
+      </div>
+      <div class="macbook-mockup">
+        <div class="macbook-screen">
+          <div class="macbook-camera"></div>
+          <div class="macbook-display">
+            <div class="macos-window">
+              <div class="macos-header">
+                <div class="macos-buttons">
+                  <span class="close"></span>
+                  <span class="minimize"></span>
+                  <span class="maximize"></span>
+                </div>
+                <div class="macos-title">sys_log.txt</div>
+              </div>
+              <div class="macos-body">
+                <p>My fascination with technology began in childhood when I wondered how a small USB drive could store and transfer entire games to a computer. That simple question sparked a curiosity about how software and hardware work together. Over time, that curiosity evolved into a passion for software engineering, where I now enjoy building scalable full-stack applications and solving real-world problems through technology.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="macbook-base">
+          <div class="macbook-notch"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="section-title">01. BACKGROUND</div>
+      <h2 class="section-heading">Education & Experience</h2>
+      
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-meta">
+            <span>MAY 2026 - JULY 2026</span>
+            <span>EXPERIENCE</span>
+          </div>
+          <h3 class="project-title">Software Intern @ EIL</h3>
+          <p class="project-desc">Developed a .NET-based Employee Dashboard with interactive analytics using Tailwind CSS and ApexCharts. Implemented backend data access using ASP.NET Core, Entity Framework, and PostgreSQL.</p>
+          <div class="project-tags">
+            <span class="project-tag">ASP.NET Core</span>
+            <span class="project-tag">RESTful APIs</span>
+            <span class="project-tag">PostgreSQL</span>
+            <span class="project-tag">Agile</span>
+          </div>
+        </div>
+
+
+
+        <div class="project-card">
+          <div class="project-meta">
+            <span>2023 – 2027</span>
+            <span>EDUCATION</span>
+          </div>
+          <h3 class="project-title">Bennett University</h3>
+          <p class="project-desc">Bachelor of Technology (B.Tech) in Computer Science & Engineering.</p>
+          <div class="project-tags">
+            <span class="project-tag">B.Tech</span>
+            <span class="project-tag">Computer Science</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="section-title">02. TECH_STACK</div>
+      <h2 class="section-heading">Core Technologies</h2>
+      
+      <div class="tech-stack-grid">
+        <div class="tech-item"><i class="devicon-c-plain colored"></i><span>C</span></div>
+        <div class="tech-item"><i class="devicon-cplusplus-plain colored"></i><span>C++</span></div>
+        <div class="tech-item"><i class="devicon-csharp-plain colored"></i><span>C#</span></div>
+        <div class="tech-item"><i class="devicon-python-plain colored"></i><span>Python</span></div>
+        <div class="tech-item"><i class="devicon-typescript-plain colored"></i><span>TypeScript</span></div>
+        
+        <div class="tech-item"><i class="devicon-dot-net-plain colored"></i><span>.NET Core</span></div>
+        <div class="tech-item"><i class="devicon-react-original colored"></i><span>React</span></div>
+        <div class="tech-item"><i class="devicon-nodejs-plain colored"></i><span>Node.js</span></div>
+        <div class="tech-item"><i class="devicon-express-original"></i><span>Express.js</span></div>
+        <div class="tech-item"><i class="devicon-postgresql-plain colored"></i><span>PostgreSQL</span></div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="section-title">03. SYSTEM_LOGS</div>
+      <h2 class="section-heading">Recent Deployments</h2>
+      
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-meta">
+            <span>ASP.NET Core</span>
+            <span>ENTERPRISE</span>
+          </div>
+          <h3 class="project-title">Employee Dashboard</h3>
+          <p class="project-desc">Enterprise employee self-service portal featuring attendance tracking, leave management, salary details, claims, notifications, secure authentication, and a responsive dashboard interface.</p>
+          <div class="project-tags">
+            <span class="project-tag">ASP.NET Core</span>
+            <span class="project-tag">C#</span>
+            <span class="project-tag">PostgreSQL</span>
+            <span class="project-tag">Tailwind CSS</span>
+          </div>
+          <a href="https://employee-dashboard-app.azurewebsites.net/" target="_blank" style="color: var(--primary); font-family: var(--font-mono); font-size: 0.9rem; text-decoration: none; margin-top: 20px; display: inline-block;">View Live Deployment -></a>
+          
+          <div class="credentials-box">
+            <div class="cred-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              TEST ACCOUNT
+            </div>
+            <div class="cred-row">
+              <span class="cred-label">Email:</span>
+              <span class="cred-value">prashant.singh@eil.co.in</span>
+            </div>
+            <div class="cred-row">
+              <span class="cred-label">Pass:</span>
+              <span class="cred-value">Admin@123</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-meta">
+            <span>System</span>
+            <span>OS</span>
+          </div>
+          <h3 class="project-title">VOS</h3>
+          <p class="project-desc">A custom 32-bit graphical x86 operating system built from scratch in C &amp; Assembly featuring a custom bootloader, GDT/IDT, BGA graphics driver, window manager, and ramdisk filesystem.</p>
+          <div class="project-tags">
+            <span class="project-tag">C</span>
+            <span class="project-tag">Assembly</span>
+            <span class="project-tag">x86</span>
+          </div>
+          <a href="https://github.com/VanshParashar08/vos" target="_blank" style="color: var(--primary); font-family: var(--font-mono); font-size: 0.9rem; text-decoration: none; margin-top: 20px; display: inline-block;">View on GitHub -></a>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>Vansh Parashar // <a href="https://github.com/VanshParashar08" target="_blank" style="color: var(--primary); text-decoration: none;">GitHub</a> // 2026</p>
+    </footer>
+  </div>
+  <script>
+    const heroActions = document.querySelector('.hero-actions');
+    if (heroActions) {
+      const slider = document.createElement('div');
+      slider.style.position = 'absolute';
+      slider.style.top = '0';
+      slider.style.left = '0';
+      slider.style.height = '100%';
+      slider.style.border = '1px solid var(--primary)';
+      slider.style.boxShadow = '0 0 20px rgba(0, 240, 255, 0.2)';
+      slider.style.borderRadius = '6px';
+      slider.style.transition = 'all 0.3s ease';
+      slider.style.opacity = '0';
+      slider.style.pointerEvents = 'none';
+      slider.style.zIndex = '0';
+      heroActions.appendChild(slider);
+
+      const buttons = heroActions.querySelectorAll('.btn');
+      
+      heroActions.addEventListener('mouseleave', () => {
+        slider.style.opacity = '0';
+      });
+
+      buttons.forEach(btn => {
+        btn.addEventListener('mouseenter', (e) => {
+          slider.style.opacity = '1';
+          slider.style.width = `${e.currentTarget.offsetWidth}px`;
+          slider.style.transform = `translate(${e.currentTarget.offsetLeft}px, calc(${e.currentTarget.offsetTop}px - 2px))`;
+        });
+      });
+    }
+  </script>
+</body>
+</html>
